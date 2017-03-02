@@ -12,7 +12,7 @@ import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
 
 
-public class JedisClient {
+public class JedisClientTest {
 
 	String IP = "192.168.100.99";
 	
