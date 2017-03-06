@@ -67,7 +67,6 @@ public class JedisClientCluster implements JedisClient {
 	}
 
 	public Long hdel(String hkey, String key) {
-		System.out.println("执行缓存删除操作！");
 		Long result = jedisCluster.hdel(hkey, key);
 		return result;
 	}
