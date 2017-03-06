@@ -1,5 +1,8 @@
 package savy.myRedis.service;
 
+import java.util.List;
+import java.util.Set;
+
 import savy.myRedis.vo.MaterialInfo;
 
 public interface JedisService {
@@ -15,4 +18,7 @@ public interface JedisService {
 	
 	//新增信息
 	public boolean addInfo(MaterialInfo info);
+	
+	//返回列表数据,根据where条件
+	public Set<String> getInfoList(String condition);
 }

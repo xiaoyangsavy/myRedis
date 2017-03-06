@@ -1,8 +1,12 @@
 package savy.myRedis.service.impl;
 
+import java.util.List;
+import java.util.Set;
+
 import savy.myRedis.dao.impl.JedisClientCluster;
 import savy.myRedis.service.JedisService;
 import savy.myRedis.util.RedisUtil;
+import savy.myRedis.util.StaticProperty;
 import savy.myRedis.vo.MaterialInfo;
 
 public class JedisServiceImpl implements JedisService {
@@ -24,16 +28,36 @@ public class JedisServiceImpl implements JedisService {
 		String tableName =  RedisUtil.getTableName(info, info.getId());
 		System.out.println("生成的表名为："+tableName);
 		try {
+			//根据生成的表名，新增数据
+			//由于未集群操作，数据会分别插入到不同的主数据库中，需在不同的数据库中进行查看
 			jedisClient.hset(tableName, "name", info.getName());
 			jedisClient.hset(tableName, "date", info.getBirthday().toString());
+			
+			//查看是否加入成功
+//			String name = jedisClient.hget(tableName, "name");
+//			System.out.println("信息插入的结果为："+ name);
+			
+			//将数据加入到索引
+			jedisClient.zadd(StaticProperty.TABLEINDEXADDRESS,Double.valueOf(info.getId()), tableName);
 		} catch (Exception e) {
+			System.out.println("插入发生错误:"+e.toString());
 			flag = false;
 		}
-		
-		
-		
 		return flag;
 	}
+	
+	//根据where条件，查找列表数据
+	public Set<String> getInfoList(String condition){
+		
+		Set<String> infoSet = jedisClient.zrevrange(condition);
+		
+		return infoSet;
+	}
+	
+	
+	
+	
+	
 	
 	
 	//通过缓存，获取数据

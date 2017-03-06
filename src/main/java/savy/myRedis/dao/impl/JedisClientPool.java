@@ -1,17 +1,16 @@
 package savy.myRedis.dao.impl;
 
 
+import java.util.Set;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import savy.myRedis.dao.JedisClient;
+
 /**
- * redis单机版客户端
- * <p>Title: JedisClientPool</p>
- * <p>Description: </p>
- * <p>Company: www.itcast.com</p> 
- * @author	入云龙
- * @date	2015年8月21日下午3:01:34
- * @version 1.0
+ * 数据库连接池Dao实现类，未使用!
+ * @author xiaoyang
+ * @version 创建时间：2017年3月6日  下午3:11:17
  */
 public class JedisClientPool implements JedisClient{
 	
@@ -70,6 +69,21 @@ public class JedisClientPool implements JedisClient{
 		Jedis jedis = jedisPool.getResource();
 		Long result = jedis.expire(key, second);
 		return result;
+	}
+
+	public Long rpush(String indexName, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Long zadd(String indexName, double score, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<String> zrevrange(String indexName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

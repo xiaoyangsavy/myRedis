@@ -75,4 +75,8 @@ public class JedisClientTest {
 				e.printStackTrace();
 			}
 	}
+	
+	
+	
+	
 }
