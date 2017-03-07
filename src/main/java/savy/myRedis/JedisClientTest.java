@@ -10,17 +10,16 @@ import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
+import savy.myRedis.util.StaticProperty;
 
 
 public class JedisClientTest {
 
-	String IP = "192.168.100.99";
-	
 	@Test
 	//直接连接数据库
 	public void jedisClient() {
 		// Jedis
-		Jedis jedis = new Jedis(IP, 6379);
+		Jedis jedis = new Jedis(StaticProperty.REDISIP, 6379);
 		// 通过redis赋值
 		jedis.set("s2", "222");
 		// 通过redis取值
@@ -34,7 +33,7 @@ public class JedisClientTest {
 	//通过数据库连接池连接数据库
 	public void jedisPool() {
 		// JedisPool
-		JedisPool pool = new JedisPool(IP, 6379);
+		JedisPool pool = new JedisPool(StaticProperty.REDISIP, 6379);
 		// 通过连接池获取jedis对象
 		Jedis jedis = pool.getResource();
 
@@ -55,12 +54,12 @@ public class JedisClientTest {
 	public void jedisCluster() {
 		// 创建jedisCluster
 		Set<HostAndPort> nodes = new HashSet<HostAndPort>();
-		nodes.add(new HostAndPort(IP, 7001));
-		nodes.add(new HostAndPort(IP, 7002));
-		nodes.add(new HostAndPort(IP, 7003));
-		nodes.add(new HostAndPort(IP, 7004));
-		nodes.add(new HostAndPort(IP, 7005));
-		nodes.add(new HostAndPort(IP, 7006));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7001));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7002));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7003));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7004));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7005));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7006));
 
 		JedisCluster cluster = new JedisCluster(nodes);
 

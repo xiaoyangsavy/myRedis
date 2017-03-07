@@ -6,6 +6,7 @@ import java.util.Set;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import savy.myRedis.dao.JedisClient;
+import savy.myRedis.util.StaticProperty;
 
 /**
  * 数据库连接池Dao实现类，未使用!
@@ -14,7 +15,7 @@ import savy.myRedis.dao.JedisClient;
  */
 public class JedisClientPool implements JedisClient{
 	
-	private JedisPool jedisPool;
+	private JedisPool jedisPool = new JedisPool(StaticProperty.REDISIP, 6379);
 
 	public String get(String key) {
 		Jedis jedis = jedisPool.getResource();
@@ -82,6 +83,21 @@ public class JedisClientPool implements JedisClient{
 	}
 
 	public Set<String> zrevrange(String indexName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<String> zrange(String indexName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<String> sinter(String... indexName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Long srem(String indexName, String value) {
 		// TODO Auto-generated method stub
 		return null;
 	}

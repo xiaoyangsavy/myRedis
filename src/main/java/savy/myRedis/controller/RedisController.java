@@ -22,6 +22,21 @@ public class RedisController {
 		System.out.println("返回的结果为：" + result);
 	}
 
+	@Test
+	// 批量添加数据
+	public void insertInfos() {
+		
+		for(int i=0;i<5;i++){
+			this.addInfo();
+		}
+	}
+	
+	@Test
+	//清空数据库
+	public void clear(){
+		  jedisService.clear(StaticProperty.TABLEINDEX);
+	}
+	
 	// @Test
 	// 先同步数据，再查找数据
 	public void syncCounttest() {
@@ -61,13 +76,31 @@ public class RedisController {
 	@Test
 	// 取得list列表中的数据
 	public void getInfoList() {
-		Set<String> infoList = jedisService.getInfoList(StaticProperty.TABLEINDEXADDRESS);
+		Set<String> infoList = jedisService.getInfoList(StaticProperty.TABLEINDEX);
+//		Set<String> infoList = jedisService.getInfoList(StaticProperty.TABLEINDEXADDRESS,false);
 		Iterator<String> iterator = infoList.iterator();
 		while (iterator.hasNext()) {
-			String s = iterator.next();
-			System.out.println("列表的数据为：" + s);
+			String tableId = iterator.next();
+			System.out.println("列表项的编号为：" + tableId);
+			MaterialInfo materialInfo = jedisService.getInfo(tableId);
+			System.out.println("列表项的数据为：" + materialInfo.toString());
 		}
-
 	}
+	
+	@Test
+	// 取得list列表中交集的数据，集群不可使用！
+	public void getInfoListByWheres() {
+		Set<String> infoList = jedisService.getInfoListByWheres(StaticProperty.TABLEINDEXAGE,StaticProperty.TABLEINDEXSEX);
+//		Set<String> infoList = jedisService.getInfoList(StaticProperty.TABLEINDEXADDRESS,false);
+		Iterator<String> iterator = infoList.iterator();
+		while (iterator.hasNext()) {
+			String tableId = iterator.next();
+			System.out.println("列表项的编号为：" + tableId);
+			MaterialInfo materialInfo = jedisService.getInfo(tableId);
+			System.out.println("列表项的数据为：" + materialInfo.toString());
+		}
+	}
+	
+	
 
 }

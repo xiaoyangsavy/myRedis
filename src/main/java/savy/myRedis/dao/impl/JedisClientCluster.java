@@ -20,18 +20,17 @@ import savy.myRedis.util.StaticProperty;
 public class JedisClientCluster implements JedisClient {
 
 	private JedisCluster jedisCluster;//集群
-	String IP = "192.168.100.99";//服务器地址
 	
 	//设置集群
 	public JedisClientCluster(){
 		// 创建jedisCluster
 		Set<HostAndPort> nodes = new HashSet<HostAndPort>();
-		nodes.add(new HostAndPort(IP, 7001));
-		nodes.add(new HostAndPort(IP, 7002));
-		nodes.add(new HostAndPort(IP, 7003));
-		nodes.add(new HostAndPort(IP, 7004));
-		nodes.add(new HostAndPort(IP, 7005));
-		nodes.add(new HostAndPort(IP, 7006));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7001));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7002));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7003));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7004));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7005));
+		nodes.add(new HostAndPort(StaticProperty.REDISIP, 7006));
 	
 		jedisCluster = new JedisCluster(nodes);
 	}
@@ -90,6 +89,15 @@ public class JedisClientCluster implements JedisClient {
 	   Long result = jedisCluster.zadd(indexName,score,value); 
 	   return result;
   } 
+   
+ //删除list指定值的数据
+   public Long srem(String indexName,String value){  
+	   System.out.println("删除指定的数据"+indexName+"、"+value);
+	   Long result = jedisCluster.zrem(indexName,value); 
+	  result = jedisCluster.del(value); 
+	   return result;
+  } 
+   
 
 	//查找list数据(反序)
    public Set<String> zrevrange(String indexName){  
@@ -97,5 +105,15 @@ public class JedisClientCluster implements JedisClient {
 	   return result;
   }
 
- 
+	//查找list数据(正序)
+   public Set<String> zrange(String indexName){  
+	   Set<String> result = jedisCluster.zrange(indexName,0,-1); 
+	   return result;
+  }
+   
+	//查找多个条件的list数据
+   public Set<String> sinter(String... indexName){  
+	   Set<String> result = jedisCluster.sinter(indexName); 
+	   return result;
+  }
 }

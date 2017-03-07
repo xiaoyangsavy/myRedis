@@ -19,6 +19,18 @@ public interface JedisService {
 	//新增信息
 	public boolean addInfo(MaterialInfo info);
 	
+	//获取信息
+	public MaterialInfo getInfo(String tableName);
+	
 	//返回列表数据,根据where条件
 	public Set<String> getInfoList(String condition);
+	
+	//返回列表数据,根据where条件,可以正序或者倒叙
+	public Set<String> getInfoList(String condition,boolean isDesc);
+	
+	// 根据多个where条件，查找列表数据
+	public Set<String> getInfoListByWheres(String... condition);
+	
+	// 清除指定表的数据
+	public boolean clear(String tableName);
 }
