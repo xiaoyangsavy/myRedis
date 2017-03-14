@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import redis.clients.jedis.Tuple;
 import savy.myRedis.service.JedisService;
 import savy.myRedis.service.impl.JedisServiceImpl;
 import savy.myRedis.util.StaticProperty;
@@ -49,7 +50,7 @@ public class RedisController {
 	}
 
 	// 录入数据
-//	@Test
+	@Test
 	public void addInfo() {
 		// 生成主键，每次自增1
 		Long userId = jedisService.getId(StaticProperty.TABLEIDUSER);
@@ -101,6 +102,17 @@ public class RedisController {
 		}
 	}
 	
+	
+	@Test
+	//分页查询列表记录
+	public void getListByPage(){
+		
+		Set<Tuple> infoList = jedisService.getInfoListByPage("baseInfoBackIndex",4,3);
+		
+		for (Tuple tuple : infoList) {  
+			System.out.println(tuple.getScore() + " : " + tuple.getElement());  
+        }  
+	}
 	
 
 }

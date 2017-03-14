@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.Tuple;
 import savy.myRedis.dao.JedisClient;
 import savy.myRedis.util.StaticProperty;
 
@@ -114,6 +115,12 @@ public class JedisClientCluster implements JedisClient {
 	//查找多个条件的list数据
    public Set<String> sinter(String... indexName){  
 	   Set<String> result = jedisCluster.sinter(indexName); 
+	   return result;
+  }
+   
+ //查找多个条件的list数据
+   public Set<Tuple> zrangeWithScores(String condition, long start, long end){  
+	   Set<Tuple> result = jedisCluster.zrangeWithScores(condition,start,end); 
 	   return result;
   }
 }

@@ -3,6 +3,7 @@ package savy.myRedis.service;
 import java.util.List;
 import java.util.Set;
 
+import redis.clients.jedis.Tuple;
 import savy.myRedis.vo.MaterialInfo;
 
 public interface JedisService {
@@ -33,4 +34,7 @@ public interface JedisService {
 	
 	// 清除指定表的数据
 	public boolean clear(String tableName);
+	
+	// 根据页数，查找列表数据
+	public Set<Tuple> getInfoListByPage(String condition, long pageNumber, long LineSize);
 }

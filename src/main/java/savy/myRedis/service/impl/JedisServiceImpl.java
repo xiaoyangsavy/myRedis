@@ -3,6 +3,7 @@ package savy.myRedis.service.impl;
 import java.util.Iterator;
 import java.util.Set;
 
+import redis.clients.jedis.Tuple;
 import savy.myRedis.dao.impl.JedisClientCluster;
 import savy.myRedis.service.JedisService;
 import savy.myRedis.util.RedisUtil;
@@ -12,7 +13,7 @@ import savy.myRedis.vo.MaterialInfo;
 public class JedisServiceImpl implements JedisService {
 
 	private JedisClientCluster jedisClient = new JedisClientCluster();
-	RedisUtil RedisUtil = new RedisUtil();
+	RedisUtil redisUtil = new RedisUtil();
 	String tableName = "myTest";
 
 	// 返回表的主键
@@ -25,7 +26,7 @@ public class JedisServiceImpl implements JedisService {
 	public boolean addInfo(MaterialInfo info) {
 		boolean flag = true;
 
-		String tableName = RedisUtil.getTableName(info, info.getId(),false);
+		String tableName = redisUtil.getTableName(info, info.getId(), false);
 		System.out.println("生成的表名为：" + tableName);
 		try {
 			// 根据生成的表名，新增数据
@@ -62,20 +63,19 @@ public class JedisServiceImpl implements JedisService {
 		return materialInfo;
 	}
 
-	
 	// 清除指定表的数据
-		public boolean clear(String tableName){
-			boolean flag = true;
-			Set<String> infoList = this.getInfoList(tableName);
-			Iterator<String> iterator = infoList.iterator();
-			while (iterator.hasNext()) {
-				String tableId = iterator.next();
-				System.out.println("列表项的编号为：" + tableId);
-				jedisClient.srem(tableName,tableId);
-			}	
-			return flag;
-		} 
-	
+	public boolean clear(String tableName) {
+		boolean flag = true;
+		Set<String> infoList = this.getInfoList(tableName);
+		Iterator<String> iterator = infoList.iterator();
+		while (iterator.hasNext()) {
+			String tableId = iterator.next();
+			System.out.println("列表项的编号为：" + tableId);
+			jedisClient.srem(tableName, tableId);
+		}
+		return flag;
+	}
+
 	// 根据where条件，查找列表数据
 	public Set<String> getInfoList(String condition) {
 
@@ -94,19 +94,14 @@ public class JedisServiceImpl implements JedisService {
 		}
 		return infoSet;
 	}
-	
+
 	// 根据多个where条件，查找列表数据
 	public Set<String> getInfoListByWheres(String... condition) {
 		Set<String> infoSet = null;
-			infoSet = jedisClient.sinter(condition);
+		infoSet = jedisClient.sinter(condition);
 		return infoSet;
 	}
 
-	
-	
-	
-	
-	
 	// 通过缓存，获取数据
 	public String getContentList(int myId) {
 
@@ -140,6 +135,15 @@ public class JedisServiceImpl implements JedisService {
 		flag = true;
 		return flag;
 
+	}
+
+	// //分页查询列表记录
+	public Set<Tuple> getInfoListByPage(String condition, long pageNumber, long lineSize) {
+		Set<Tuple> infoSet = null;
+		long start = (pageNumber - 1) * lineSize;
+		long end = (pageNumber) * lineSize - 1;//由于redis的范围包括边界值，需要-1
+		infoSet = jedisClient.zrangeWithScores(condition, start, end);
+		return infoSet;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Tuple;
 import savy.myRedis.dao.JedisClient;
 import savy.myRedis.util.StaticProperty;
 
@@ -98,6 +99,11 @@ public class JedisClientPool implements JedisClient{
 	}
 
 	public Long srem(String indexName, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<Tuple> zrangeWithScores(String condition, long pageNumber, long LineSize) {
 		// TODO Auto-generated method stub
 		return null;
 	}
