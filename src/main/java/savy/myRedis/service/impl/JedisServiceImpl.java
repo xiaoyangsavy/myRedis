@@ -76,6 +76,13 @@ public class JedisServiceImpl implements JedisService {
 		return flag;
 	}
 
+	// 清除指定表的数据
+	public boolean deleteById(String tableId) {
+		boolean flag = true;
+		jedisClient.del(tableId);
+		return flag;
+	}
+
 	// 根据where条件，查找列表数据
 	public Set<String> getInfoList(String condition) {
 
@@ -141,7 +148,7 @@ public class JedisServiceImpl implements JedisService {
 	public Set<Tuple> getInfoListByPage(String condition, long pageNumber, long lineSize) {
 		Set<Tuple> infoSet = null;
 		long start = (pageNumber - 1) * lineSize;
-		long end = (pageNumber) * lineSize - 1;//由于redis的范围包括边界值，需要-1
+		long end = (pageNumber) * lineSize - 1;// 由于redis的范围包括边界值，需要-1
 		infoSet = jedisClient.zrangeWithScores(condition, start, end);
 		return infoSet;
 	}

@@ -41,5 +41,6 @@ public interface JedisClient {
 	// 删除list指定值的数据
 	public Long srem(String indexName, String value);
 
+	//分页查询列表记录
 	public Set<Tuple> zrangeWithScores(String condition, long pageNumber, long LineSize);
 }

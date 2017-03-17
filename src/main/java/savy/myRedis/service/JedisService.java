@@ -35,6 +35,9 @@ public interface JedisService {
 	// 清除指定表的数据
 	public boolean clear(String tableName);
 	
+	//删除单个表
+	public boolean deleteById(String tableId);
+	
 	// 根据页数，查找列表数据
 	public Set<Tuple> getInfoListByPage(String condition, long pageNumber, long LineSize);
 }

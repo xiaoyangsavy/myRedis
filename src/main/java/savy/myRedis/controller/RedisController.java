@@ -34,8 +34,14 @@ public class RedisController {
 	
 	@Test
 	//清空数据库
-	public void clear(){
+	public void clearAll(){
 		  jedisService.clear(StaticProperty.TABLEINDEX);
+	}
+	
+	@Test
+	//清空单个记录
+	public void clear(){
+		  jedisService.deleteById("");
 	}
 	
 	// @Test
